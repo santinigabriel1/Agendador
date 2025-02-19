@@ -454,16 +454,53 @@ function convertTime(time) {
   time = timeHour + ":" + timeMin + " " + timeFormat;
   return time;
 }
-function toggleMenu() {
+document.addEventListener("DOMContentLoaded", function () {
   const menu = document.getElementById('side-menu');
   const toggleButton = document.querySelector('.menu-toggle');
 
-  menu.classList.toggle('closed');
+  // Garante que o menu inicie corretamente aberto e com as bordas
+  menu.classList.add('open'); // Define o estado inicial correto
+  toggleButton.style.left = "260px"; // Define a posição correta do botão
+  adicionarBordas();
+});
 
-  // Ajustar a posição do botão
-  if (menu.classList.contains('closed')) {
-      toggleButton.style.left = "70px"; // Move junto com o menu fechado
+function toggleMenu() {
+  const menu = document.getElementById('side-menu');
+  const toggleButton = document.querySelector('.menu-toggle');
+  const menuItems = document.querySelectorAll('.side-menu li');
+
+  if (menu.classList.contains('open')) {
+      // Fecha o menu
+      menu.classList.remove('open');
+      menu.classList.add('closed');
+      toggleButton.style.left = "70px"; // Move botão junto com o menu fechado
+
+      // Remove todas as bordas ao fechar
+      menuItems.forEach(item => {
+          item.style.borderBottom = "none";
+      });
+
   } else {
+      // Abre o menu
+      menu.classList.remove('closed');
+      menu.classList.add('open');
       toggleButton.style.left = "260px"; // Retorna à posição original
+
+      // Adiciona a borda corretamente
+      adicionarBordas();
   }
 }
+
+// Função para adicionar bordas corretamente ao abrir o menu
+function adicionarBordas() {
+  const menuItems = document.querySelectorAll('.side-menu li');
+
+  menuItems.forEach((item, index) => {
+      if (index !== menuItems.length) {
+          item.style.borderBottom = "1px solid rgba(55, 60, 79, 0.2)"; // Linha normal
+      } else {
+          item.style.borderBottom = "none"; // Remove a borda do último item
+      }
+  });
+}
+
